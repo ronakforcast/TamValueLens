@@ -1,0 +1,28 @@
+flowchart TD
+    subgraph "Step 1: Data Collection & Transformation"
+        AzureAPI["Azure Cost API"] --> ETL
+        GCPAPI["GCP Cost API"] --> ETL
+        AWSAPI["AWS Cost API"] --> ETL
+        ETL["Data Transformer"] --> UnifiedFiles[("Cloud Cost\nUnified Files")]
+    end
+
+    subgraph "Step 2: Data Enrichment"
+        UnifiedFiles --> Enricher
+        CAST["CAST API"] --> Enricher
+        Enricher["Data Enricher"] --> EnrichedFiles[("Enriched Cost\nData Files")]
+    end
+
+    subgraph "Step 3: Visualization"
+        EnrichedFiles --> Looker["Frontec Dashboard\n(Looker Studio)"]
+    end
+
+    %% Styling
+    classDef apiNode fill:#f9f,stroke:#333,stroke-width:2px
+    classDef dataNode fill:#bbf,stroke:#333,stroke-width:2px
+    classDef processNode fill:#bfb,stroke:#333,stroke-width:2px
+    classDef visualNode fill:#fbb,stroke:#333,stroke-width:2px
+    
+    class AzureAPI,GCPAPI,AWSAPI,CAST apiNode
+    class UnifiedFiles,EnrichedFiles dataNode
+    class ETL,Enricher processNode
+    class Looker visualNode
